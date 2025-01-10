@@ -9,19 +9,15 @@
   // null is a special value in Sass that means nothing, and it is used to represent the absence of a value, you need to return null if the type or level is not valid
 
   // check if the type exists in the colors map
-  @if map.has-key($colors, $type) {
-    $type-map: map-get($colors, $type);
-
-    // check if the level exists in the type map
-    @if map.has-key($type-map, $level) {
-      @return map-get($type-map, $level); // return the color value
-    } @else {
-      @warn "Invalid color level: `#{$level}` for type `#{$type}`";
-      @return null;
-    }
+  @if map.has-key($colors, $type) and map.has-key(map.get($colors, $type), $level) {
+    
+    $level-map:map.get($colors, $type);
+    
+    @return map.get(map.get($colors, $type), $level);
   } @else {
-    @warn "Invalid color type: `#{$type}`";
+    @warn "Invalid color level: `#{$level}` for type `#{$type}`";
     @return null;
   }
-
 }
+
+
